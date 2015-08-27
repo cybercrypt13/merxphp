@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DATA=`git log -1`
+
+cd /var/www/nizex.com/lizzy/db/upgrades
+DATA2=`php upgrade.php`
+
+#DATA3=`curl http://localhost:8080`
+#DATA3=${DATA3//<br>/"\n"}
+

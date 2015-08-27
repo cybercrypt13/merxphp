@@ -1,9 +1,7 @@
 <?
 $dbms       				= 'mysql5';
-//hosts that we support
 $dbhost        			= 'db1-primary';
-
-//user names
+$dbname						= 'merx';
 $dbuser        			= 'myuser';
 $dbpasswd      			= 'mypass';
 ?>
