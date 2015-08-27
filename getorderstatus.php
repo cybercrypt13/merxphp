@@ -7,7 +7,7 @@ global $db;
 
 $ar = safetycheck( $vars, $responsetype );
 
-if ( isempty( $ar ) || !$ar['InternalID'] > 0 )
+if ( !isset( $ar ) || !$ar['InternalID'] > 0 )
 	{
 	RestLog("16587 - Insufficient data provided for creating order \n".print_r($vars,true)."\n");
 	RestUtils::sendResponse(400, "16587 - Insufficient data provided" ); //Internal Server Error
@@ -28,7 +28,7 @@ if (!$result = $db->sql_query($query))
 	}
 
 //08.26.2015 ghh -  if no order was found then return
-if ($db->sql_numrows($query) == 0 )
+if ($db->sql_numrows($result) == 0 )
 	{
 	RestLog("Error 16589 in query: $query\n".$db->sql_error());
 	RestUtils::sendResponse(500, "16589 - There was a problem locating the order"); //Internal Server Error

@@ -2,7 +2,7 @@
 $dbhost = "";
 $db;
 
-require_once ("db/vars.php");
+require_once ("vars.php");
 require_once ("db/mysql5.php");
 require_once ("includes/db.php");
 require_once ("db/mysql5.php");
@@ -19,32 +19,51 @@ function verifyBSV( $bsvkey )
 global $db;
 global $requestvars;
 
-$url = "63.247.79.200:8100?bsvkey=".$bsvkey;
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$result = curl_exec($ch);
-$info = curl_getinfo($ch);
-curl_close($ch);
+$query = "select BSVKeyID from AuthorizedBSVKeys where BSVKey='$bsvkey'";
 
-if ($info['http_code'] == 200) 
+if (!$result = $db->sql_query($query))
 	{
-	//08.20.2015 ghh -  now that we have confirmed that we have a valid BSV key
-	//lets look in the local table and figure out what its local ID is and create
-	//it if its not already in the table.
-	$query = "select BSVKeyID from AuthorizedBSVKeys where BSVKey='$bsvkey'";
+	RestLog("Error in query: $query\n".$db->sql_error());
+	RestUtils::sendResponse(500, 'Error 16541 Problem locating BSVKey'); //Internal Server Error
+	return false;
+	}
 
-	if (!$result = $db->sql_query($query))
-		{
-		RestLog("Error in query: $query\n".$db->sql_error());
-		RestUtils::sendResponse(500, 'Error 16541 Problem locating BSVKey'); //Internal Server Error
-		return false;
-		}
-
+//if we find the key then continue and return
+if ( $db->sql_numrows( $result ) > 0 )
+	{
 	$row = $db->sql_fetchrow( $result );
 	$requestvars['BSVKeyID'] = $row['BSVKeyID'];
-	
 	return true;
+	}
+else
+	{
+	$url = "63.247.79.200:8100?bsvkey=".$bsvkey;
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$result = curl_exec($ch);
+	$info = curl_getinfo($ch);
+	curl_close($ch);
+
+	if ($info['http_code'] == 200) 
+		{
+		//08.20.2015 ghh -  now that we have confirmed that we have a valid BSV key
+		//lets look in the local table and figure out what its local ID is and create
+		//it if its not already in the table.
+		$query = "insert into AuthorizedBSVKeys (BSVKey) values('$bsvkey')";
+
+		if (!$result = $db->sql_query($query))
+			{
+			RestLog("Error in query: $query\n".$db->sql_error());
+			RestUtils::sendResponse(500, 'Error 16541 Problem locating BSVKey'); //Internal Server Error
+			return false;
+			}
+
+		$row = $db->sql_fetchrow( $result );
+		$requestvars['BSVKeyID'] = $bsvkey;
+		
+		return true;
+		}
 	}
 
 return false;
@@ -339,7 +358,7 @@ if ( $responsetype == 'get' )
 	}
 else
 	{
-
+	return $vars;
 	}
 }
 

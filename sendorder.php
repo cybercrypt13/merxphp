@@ -67,9 +67,9 @@ if ( $db->sql_numrows( $result ) == 0 )
 		}
 
 	$query = "insert into PurchaseOrders (Status, DealerID, BSVKeyID, PONumber,
-				DateCreated, $shiptofields LastFour) values 
+				DateCreated, $shiptofields LastFour,OrderType) values 
 				( $ar[Status], $vars[DealerID], $vars[BSVKeyID], '$ar[PONumber]', now(),
-				$shiptovals '$ar[LastFour]' )
+				$shiptovals '$ar[LastFour]',$ar[OrderType] )
 				";
 
 	}
@@ -210,9 +210,9 @@ foreach ( $ar['Items'] as $value => $key)
 		//08.21.2015 ghh -  make sure the non required fields have a value
 		if ( $key['FillStatus'] == '' ) $key['FillStatus'] = 0;
 		if ( $key['OrderType'] == '' ) $key['OrderType'] = 2;
-		$query = "insert into PurchaseOrderItems (POItemID,POID,ItemNumber,Quantity,OrderType
+		$query = "insert into PurchaseOrderItems (POItemID,POID,ItemNumber,Quantity,
 					 FillStatus,ItemID,VendorID) values ( '','$poid','$key[ItemNumber]',$key[Qty],
-					 $key[OrderType],$key[FillStatus],$itemrow[ItemID], $key[VendorID])";
+					 $key[FillStatus],$itemrow[ItemID], $key[VendorID])";
 		}
 	else
 		{

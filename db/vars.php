@@ -4,6 +4,6 @@ $dbms       				= 'mysql5';
 $dbhost        			= 'db1-primary';
 
 //user names
-$dbuser        			= 'nizex_user';
-$dbpasswd      			= '%Gq&sr';
+$dbuser        			= 'myuser';
+$dbpasswd      			= 'mypass';
 ?>
