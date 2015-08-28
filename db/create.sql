@@ -94,6 +94,7 @@ CREATE TABLE `Items` (
   `MSRP` decimal(13,3) NOT NULL DEFAULT '0.000' COMMENT 'This stores the suggested retail price of the item',
   `MAP` decimal(13,3) NOT NULL DEFAULT '0.000' COMMENT 'This store the minimum advertise price of the item',
   `Category` varchar(50) NOT NULL DEFAULT '' COMMENT 'Hold category info',
+  `Weight` decimal(13,3) NOT NULL DEFAULT '0.000' COMMENT 'This stores the weight of item if available',
   PRIMARY KEY (`ItemID`),
   KEY `iPart` (`VendorID`,`ItemNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This tables holds the manufacturer/suppliers price file';
