@@ -1,7 +1,7 @@
 <?php
 $dbms       				= 'mysql5';
-$dbhost        			= 'db1-primary';
+$dbhost        			= 'localhost';
 $dbname						= 'merx';
-$dbuser        			= 'myuser';
+$dbuser        			= 'root';
 $dbpasswd      			= 'mypass';
 ?>
