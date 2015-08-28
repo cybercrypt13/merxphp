@@ -1,4 +1,4 @@
-<?
+<?php
 include( '../mysql5.php' );
 include( '../../includes/restcommon.php' );
 

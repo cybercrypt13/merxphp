@@ -19,12 +19,42 @@ if ( $import )
 		//into an array.  So the first column is 0 second 1...
 		while (( $data = fgetcsv( $handle, 1000, ',' )) !== FALSE )
 			{
-			//determine which column holds the account number for each dealer and replace
-			//0 with whatever column that is.  
-			$query = "insert into DealerCredentials ( CreatedDateTime, Active, AccountNumber )
-							values( now(), 1, '$data[0]' )";
+			//here we are pulling separate line items per dealer to tell us their
+			//specific price code and percentage for the different items.  similar 
+			//to the code below in the else condition, it will be inserting and updating
+			//but will be for the specific dealer instead of dealer 0
+			//we also won't have an array to work with as we'll be digging each element
+			//from the file.
+			$dealer	= $data[0]; //account number for dealer
+			$pricecode = $data[1];
+			$percentage = $data[2];
+
+			//first lets grab the dealerid from dealercredentials
+			$query = "select DealerID from DealerCredentials where AccountNumber='$dealer'";
+			$result = $db->sql_query( $query );
+			$row = $db->sql_fetchrow( $result );
+			$dealerid = $row['DealerID'];
+
+			$query = "select DealerID, PriceCode from PriceCodesLink where
+						DealerID=$dealerid and PriceCode=$a[code]";
+
+			$result = $db->sql_query( $query );
+
+			//if we don't have a result then we need to insert a new record
+			if ( $db->sql_numrows( $result ) == 0 )
+				{
+				$query = "insert into PriceCodesLink values( $dealerid, '$pricecode','$percentage' )";
+				}
+			else
+				{
+				//if we found it in the table already then we need to update the existing
+				//record with the current percentage
+				$query = "update PriceCodesLink set Discount=$percentage where
+								DealerID=$dealerid and PriceCode='$pricecode'";
+				}
 
 			$db->sql_query( $query );
+
 			}
 		}
 	}

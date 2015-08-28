@@ -1,4 +1,4 @@
-<?
+<?php
 $dbms       				= 'mysql5';
 $dbhost        			= 'db1-primary';
 $dbname						= 'merx';

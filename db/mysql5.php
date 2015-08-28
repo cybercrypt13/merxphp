@@ -1,4 +1,4 @@
-<?
+<?php
 //03.27.2014 naj - this is the rewrite of the nizex sql_db class.
 //This version now uses mysqli
 
