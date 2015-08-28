@@ -1,4 +1,4 @@
-<?
+<?php
 include( "../includes/restcommon.php" );
 
 //query your database after putting in vendors to grab the vendorid

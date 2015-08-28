@@ -1,4 +1,4 @@
-<?
+<?php
 //08.25.2015 ghh -  this function is responsible for returning a list of
 //vendor names and ID's for this specific server
 function getVendors( )

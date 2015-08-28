@@ -1,4 +1,4 @@
-<?
+<?php
 //08.20.2015 ghh -  this function receives an order request and processes it into the
 //appropriate tables
 function sendOrder($vars, $responsetype)

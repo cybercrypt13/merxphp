@@ -1,4 +1,4 @@
-<?
+<?php
 //08.25.2015 ghh -  this function is responsible for returning pricing and other
 //data about a specific part but no inventory or image data
 function getItemInfo($vars, $responsetype)

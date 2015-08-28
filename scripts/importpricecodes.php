@@ -1,4 +1,4 @@
-<?
+<?php
 include( "../includes/restcommon.php" );
 
 //if we are going to be importing different pricecodes for each dealer
