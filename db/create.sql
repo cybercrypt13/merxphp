@@ -51,6 +51,7 @@ CREATE TABLE `DealerCredentials` (
   `Active` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'Turns on or off the clients Account',
   `AccountNumber` varchar(35) NOT NULL DEFAULT '' COMMENT 'Holds the dealer number',
   PRIMARY KEY (`DealerID`),
+  UNIQUE KEY `iAccountNumber` (`AccountNumber`),
   KEY `iUUIDIPAddr` (`IPAddress`),
   KEY `iLogin` (`DealerKey`,`Active`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='This table stores the client system''s credentials';

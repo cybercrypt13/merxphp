@@ -2,12 +2,14 @@
 $dbhost = "";
 $db;
 
-require_once ("vars.php");
-require_once ("db/mysql5.php");
-require_once ("includes/db.php");
-require_once ("db/mysql5.php");
-require_once ("includes/general_functions.php");
-require_once ("includes/restutils.php");
+//replace with root path to where you installed merxphp
+$ROOTPATH = "/home/merxphp";
+
+require_once ("$ROOTPATH/vars.php");
+require_once ("$ROOTPATH/db/mysql5.php");
+require_once ("$ROOTPATH/includes/db.php");
+require_once ("$ROOTPATH/db/mysql5.php");
+require_once ("$ROOTPATH/includes/restutils.php");
 
 date_default_timezone_set('UTC');
 //date_default_timezone_set('America/New_York');

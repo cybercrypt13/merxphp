@@ -314,7 +314,7 @@ foreach ( $ar['Units'] as $value => $key)
 	$key['ModelNumberNoFormat'] = preg_replace('/[^a-zA-Z0-9]/', '', $key['ModelNumber'] ); //strip formatting.
 
 	//08.21.2015 rch -  first we need to see if the item is already on the order
-	$query = "select POUnitID, Quantity 
+	$query = "select POUnitID
 					from PurchaseOrderUnits
 					where POID='$poid' and ModelNumber = '$key[ModelNumber]'
 					and VendorID = '$key[VendorID]'";
@@ -325,10 +325,6 @@ foreach ( $ar['Units'] as $value => $key)
 		RestUtils::sendResponse(500, "16549 - There was an error locating purchase order unit");
 		return false;
 		}
-	
-
-
-
 
 	//08.21.2015 rch -  we want to make sure that we have a partnumber and vendorid 
 	//before attempting to insert.
@@ -342,7 +338,7 @@ foreach ( $ar['Units'] as $value => $key)
 		//08.21.2015 ghh -  before we bother inserting the item we're going to first grab some
 		//details from items so we can build up our response.
 		$query = "select ModelID, NLA, CloseOut, Cost, OrderCode 
-					MSRP from UnitModels 
+					MSRP from UnitModel 
 					where ModelNumberNoFormat='$key[ModelNumberNoFormat]' and VendorID=$key[VendorID]
 					and Year=$year";
 		if (!$unitresult = $db->sql_query($query))
