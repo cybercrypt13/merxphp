@@ -16,6 +16,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 create database if not exists merx;
+use merx;
 --
 -- Table structure for table `AuthorizedBSVKeys`
 --
