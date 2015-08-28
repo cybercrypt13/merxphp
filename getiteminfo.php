@@ -14,9 +14,10 @@ if ( empty( $ar )  || !isset($ar[ 'VendorID' ]) || !isset( $ar[ 'ItemNumber' ] )
 
 //now we grab inventory records for the requested item and build up our package to return
 //to the dealer
+//08.28.2015 ghh -  added weight field
 $query = "select Items.ItemID, Items.MSRP, NLA, CloseOut,
 				PriceCode, Cost, MAP, Category, 
-				ManufItemNumber, ManufName, SupersessionID
+				ManufItemNumber, ManufName, SupersessionID, Weight
 				from Items
 				where 
 				ItemNumber='$ar[ItemNumber]' and
@@ -38,6 +39,7 @@ $item['CloseOut']				= $row['CloseOut'];
 $item['MSRP']					= $row['MSRP'];
 $item['Category']				= $row['Category'];
 $item['MAP']					= $row['MAP'];
+$item['Weight']				= $row['Weight']; //08.28.2015 ghh -  
 
 if ( $row['ItemID'] > 0 )
 	$item['Cost']					= getItemCost( $row['ItemID'], $ar['DealerID'],

@@ -16,9 +16,10 @@ if ( empty( $ar )  || !isset($ar[ 'VendorID' ]) || !isset( $ar[ 'ItemNumber' ] )
 //to the dealer
 //08.26.2015 rch - Moving ItemStock,Warehouses,DaysToFullfill to left outer joins 
 //to account for not stocking an item or not putting in warehouse
+//08.28.2015 ghh -  added Weight
 $query = "select Items.ItemID, Items.MSRP, NLA, CloseOut,
 				PriceCode, Cost, MAP, Category, WarehouseName, 
-				WarehouseState, Qty, DaysToArrive,
+				WarehouseState, Qty, DaysToArrive, Weight
 				ManufItemNumber, ManufName, SupersessionID
 				from Items
 				left outer join ItemStock on ItemStock.ItemID = Items.ItemID 
@@ -51,6 +52,7 @@ while ( $row = $db->sql_fetchrow( $result ) )
 		$MSRP					= $row['MSRP'];
 		$Category			= $row['Category'];
 		$MAP					= $row['MAP'];
+		$Weight				= $row['Weight']; //08.28.2015 ghh -  
 		}
 
 	$rst[$i]['WarehouseName']		= $row['WarehouseName'];

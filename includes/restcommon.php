@@ -277,7 +277,6 @@ global $db;
 //this item and if so we'll just pass it back
 $query = "select DealerCost from ItemCost where ItemID=$itemid and 
 				DealerID=$dealerid";
-				error_log( $query );
 if (!$result = $db->sql_query($query))
 	{
 	RestLog("Error 16527 in query: $query\n".$db->sql_error());
@@ -303,12 +302,41 @@ if ( $pricecode != '' )
 		RestUtils::sendResponse(500,"16528 - There was a problem finding your price code"); //Internal Server Error
 		return false;
 		}
-	$row = $db->sql_fetchrow( $result );
 
-	if ( $row['Discount'] > 0 )
-		$cost = bcmul( $row['Discount'], $cost );
+	//08.28.2015 ghh -  if we did not find a dealer specific code then next we're going to 
+	//look for a global code to see if we can find that
+	if ( $db->sql_numrows( $result ) == 0 )
+		{
+		$query = "select Discount from PriceCodesLink where DealerID=0
+						and PriceCode=$pricecode";
+
+		if (!$result = $db->sql_query($query))
+			{
+			RestLog("Error 16626 in query: $query\n".$db->sql_error());
+			RestUtils::sendResponse(500,"16626 - There was a problem finding your price code"); //Internal Server Error
+			return false;
+			}
+
+		//if we found a global price code entry then enter here
+		if ( $db->sql_numrows( $result ) > 0 )
+			{
+			$row = $db->sql_fetchrow( $result );
+			if ( $row['Discount'] > 0 )
+				$cost = bcmul( ( bcadd(1, $row['Discount']), $cost );
+			else
+				$cost = bcmul( bcadd( 1, $row['Discount']), $list );
+			}
+		}
 	else
-		$cost = bcmul( $row['Discount'], $list );
+		{
+		//if we found a dealer specific code then enter here
+		$row = $db->sql_fetchrow( $result );
+
+		if ( $row['Discount'] > 0 )
+			$cost = bcmul( ( bcadd(1, $row['Discount']), $cost );
+		else
+			$cost = bcmul( bcadd( 1, $row['Discount']), $list );
+		}
 	}
 
 return $cost;
