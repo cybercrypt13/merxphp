@@ -1,0 +1,88 @@
+# merxphp
+server
+{
+		listen		80;
+		server_name	merxphp;
+		rewrite		^/(.*) https://merx2.nizex.com/$1 permanent;
+}
+
+server {
+
+	listen 443;
+	server_name merxphp;
+
+	access_log /var/log/nginx/merx.com-access.log;
+	error_log /var/log/nginx/merx.com-error.log;
+
+	client_max_body_size 80m;
+		
+	## Strict Transport Security header for enhanced security. See
+	## http://www.chromium.org/sts. I've set it to 2 hours; set it to
+	## whichever age you want.
+	add_header Strict-Transport-Security "max-age=16070400; includeSubdomains";
+
+	## Set up iframe security
+	## https://developer.mozilla.org/en-US/docs/Web/HTTP/X-Frame-Options
+	add_header X-Frame-Options "SAMEORIGIN";
+
+
+	# Make site accessible from http://localhost/
+	ssl	on;
+	ssl_certificate /etc/nginx/ssl/merx.crt;
+	ssl_certificate_key /etc/nginx/ssl/merx.key;	
+	ssl_session_timeout	5m;
+
+
+	root /var/www/merxphp;
+
+	location / {
+		index index.php index.html;
+		# Uncomment to enable naxsi on this location
+		# include /etc/nginx/naxsi.rules
+	  	try_files $uri $uri/ /index.php?q=$uri&$args;
+	}
+
+
+	location = /favicon.ico
+	   {
+	   return 204;
+	   }
+
+	location ~* .(php|htm|html)$
+	#location ~ \.php$
+		{
+		#fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		send_timeout   420;
+		fastcgi_read_timeout 420;
+		#fastcgi_pass   unix:/var/run/php5-fpm.sock;
+		fastcgi_pass   unix:/dev/shm/php5-fpm.sock;
+		fastcgi_index  index.php;
+		#fastcgi_param   PATH_INFO         $fastcgi_path_info;
+	  	#fastcgi_param   PATH_TRANSLATED   $document_root$fastcgi_path_info;
+	 	fastcgi_param   SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+		include     /etc/nginx/fastcgi_params;
+		}
+
+	location ~* .(js|css|png|gif|jpg)$
+	  	{
+	  	access_log off;
+	  	expires -1;
+	  	}
+  
+  location /.git
+	  	{
+	  	deny all;
+	  	}
+  
+  location /db
+		{
+		deny all;
+		}
+  
+  error_page 404 /404.html;
+  location = /404.html
+	  	{
+	  	internal;
+	  	}
+
+}
