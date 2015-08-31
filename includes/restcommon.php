@@ -3,7 +3,7 @@ $dbhost = "";
 $db;
 
 //replace with root path to where you installed merxphp
-$ROOTPATH = "/home/merxphp";
+$ROOTPATH = "/var/www/merxphp";
 
 require_once ("$ROOTPATH/vars.php");
 require_once ("$ROOTPATH/db/mysql5.php");
@@ -322,7 +322,7 @@ if ( $pricecode != '' )
 			{
 			$row = $db->sql_fetchrow( $result );
 			if ( $row['Discount'] > 0 )
-				$cost = bcmul( ( bcadd(1, $row['Discount']), $cost );
+				$cost = bcmul( bcadd(1, $row['Discount']), $cost );
 			else
 				$cost = bcmul( bcadd( 1, $row['Discount']), $list );
 			}
@@ -333,7 +333,7 @@ if ( $pricecode != '' )
 		$row = $db->sql_fetchrow( $result );
 
 		if ( $row['Discount'] > 0 )
-			$cost = bcmul( ( bcadd(1, $row['Discount']), $cost );
+			$cost = bcmul( bcadd(1, $row['Discount']), $cost );
 		else
 			$cost = bcmul( bcadd( 1, $row['Discount']), $list );
 		}
