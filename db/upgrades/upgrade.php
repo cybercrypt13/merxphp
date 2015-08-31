@@ -8,7 +8,7 @@ $query = "select max(Version) from tableversion";
 
 if (!$result = $db->sql_query($query)) die( "Error in query $query\n".$db->sql_error()."\n\n");
 
-$row = $db_support->sql_fetchrow( $result );
+$row = $db->sql_fetchrow( $result );
 
 if ( $row[ 'Version' ] > 0 )
 	$tableversion = $row[ 'Version' ];
