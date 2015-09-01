@@ -193,7 +193,8 @@ global $db;
 
 function RestLog($msg)
 {
-error_log(date('r')." REST Request from $_SERVER[REMOTE_ADDR]: $msg\n", 3, "/var/log/merx.log");
+global $ROOTPATH;
+error_log(date('r')." REST Request from $_SERVER[REMOTE_ADDR]: $msg\n", 3, "$ROOTPATH/merx.log");
 }
 
 function cleanRest($data)
