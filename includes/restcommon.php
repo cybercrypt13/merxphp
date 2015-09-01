@@ -120,7 +120,7 @@ if ( $db->db_connect_id )
 	//08.20.2015 ghh -  now we see if they have a valid key
 	if ( isset( $row[ 'DealerKey' ] ) && $row[ 'DealerKey' ] != $dealerkey )
 		{
-		RestLog( "Error Dealer Key is Invalid Query:".$query );
+		RestLog( "Error Dealer Key is Invalid Query:".$query."\n $row[DealerKey] != $dealerkey" );
 		die(RestUtils::sendResponse(401, 'Error 16538 Bad Dealer Key'));
 		}
 
