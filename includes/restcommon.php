@@ -66,6 +66,13 @@ else
 		
 		return true;
 		}
+	else
+		{
+		RestLog("Error in query: $query\n".$db->sql_error());
+		RestUtils::sendResponse(500, 'Error 16630 There was a communication problem with the bsv 
+												key validation server'); //Internal Server Error
+		return false;
+		}
 	}
 
 return false;
