@@ -89,7 +89,7 @@ if ( $db->db_connect_id )
 	{
 	$query = "select DealerID, DealerKey, IPAddress, Active 
 					from DealerCredentials where
-					AccountNumber=$accountnumber ";
+					AccountNumber='$accountnumber' ";
 
 	if ( !$result = $db->sql_query( $query ) )
 		{
