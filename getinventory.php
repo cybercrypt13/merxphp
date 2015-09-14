@@ -116,6 +116,13 @@ if ( $itemid > 0 )
 
 	$item['Images'] 				= $img;
 	}
+else
+	{
+	RestLog("Error 16635 The item number being requested doesn't exist\n");
+	RestUtils::sendResponse(500, "16635 - The Item you requested was not found."); //Internal Server Error
+	return false;
+	}
+	
 
 RestLog("Successful Request\n");
 //08.10.2012 naj - return code 200 OK.

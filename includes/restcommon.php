@@ -66,6 +66,12 @@ else
 		
 		return true;
 		}
+	else
+		{
+		RestLog("Error in query: $query\n".$db->sql_error());
+		RestUtils::sendResponse(500, 'Error 16630 There was a communication problem with the bsv key validation server'); //Internal Server Error
+		return false;
+		}
 	}
 
 return false;
@@ -83,7 +89,7 @@ if ( $db->db_connect_id )
 	{
 	$query = "select DealerID, DealerKey, IPAddress, Active 
 					from DealerCredentials where
-					AccountNumber=$accountnumber ";
+					AccountNumber='$accountnumber' ";
 
 	if ( !$result = $db->sql_query( $query ) )
 		{
@@ -114,7 +120,7 @@ if ( $db->db_connect_id )
 	//08.20.2015 ghh -  now we see if they have a valid key
 	if ( isset( $row[ 'DealerKey' ] ) && $row[ 'DealerKey' ] != $dealerkey )
 		{
-		RestLog( "Error Dealer Key is Invalid" );
+		RestLog( "Error Dealer Key is Invalid Query:".$query."\n $row[DealerKey] != $dealerkey" );
 		die(RestUtils::sendResponse(401, 'Error 16538 Bad Dealer Key'));
 		}
 
@@ -187,7 +193,8 @@ global $db;
 
 function RestLog($msg)
 {
-error_log(date('r')." REST Request from $_SERVER[REMOTE_ADDR]: $msg\n", 3, "/var/log/lizzy/merx.log");
+global $ROOTPATH;
+error_log(date('r')." REST Request from $_SERVER[REMOTE_ADDR]: $msg\n", 3, "$ROOTPATH/merx.log");
 }
 
 function cleanRest($data)
