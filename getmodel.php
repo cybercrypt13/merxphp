@@ -35,7 +35,7 @@ $unit['Colors'] 				= $row['Colors'];
 $unit['ModelName']			= $row['ModelName'];
 $unit['NLA']					= $row['NLA'];
 $unit['CloseOut']				= $row['CloseOut'];
-$unit['Cost']					= getUnitCost($row['ModelID'],$ar['DealerID'],$row['Cost'] ); 
+$unit['Cost']					= getUnitCost($row['ModelID'],$ar['ClientID'],$row['Cost'] ); 
 $unit['MSRP']					= $row['MSRP'];
 $unit['MAP']					= $row['MAP'];
 $unit['Description']			= $row['Description'];
@@ -51,7 +51,7 @@ if ( $modelid > 0 )
 					where Warehouses.WarehouseID=UnitModelStock.WarehouseID and
 					UnitModelStock.ModelID=$row[ModelID] and
 					UnitModelStock.WarehouseID=DaysToFullfill.WarehouseID and
-					DaysToFullfill.DealerID=$ar[DealerID] order by DaysToArrive";
+					DaysToFullfill.ClientID=$ar[ClientID] order by DaysToArrive";
 
 	if (!$result = $db->sql_query($query))
 		{

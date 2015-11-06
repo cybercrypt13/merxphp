@@ -1,6 +1,6 @@
 use merx;
 
-insert into DealerCredentials values( null, '0d3d6381-0e02-11e5-9eb5-20c9d0478db9', null, now(), now(), now(), null, 1,'12345');
+insert into ClientCredentials values( null, '0d3d6381-0e02-11e5-9eb5-20c9d0478db9', null, now(), now(), now(), null, 1,'12345');
 insert into AuthorizedBSVKeys values( null, '108b6a78-4027-447b-9b2d-a6c9b7da72dc', 0 );
 alter table PurchaseOrders auto_increment=1000;
 insert into Vendors values( null, 'Wester Power Sports' );

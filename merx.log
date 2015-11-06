@@ -1,0 +1,41 @@
+Tue, 01 Sep 2015 17:59:48 +0000 REST Request from 96.38.254.90: USER AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36
+Tue, 01 Sep 2015 17:59:48 +0000 REST Request from 96.38.254.90: Getting Inventory
+Tue, 01 Sep 2015 17:59:49 +0000 REST Request from 96.38.254.90: Successful Request
+
+Tue, 01 Sep 2015 17:59:57 +0000 REST Request from 96.38.254.90: USER AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36
+Tue, 01 Sep 2015 17:59:57 +0000 REST Request from 96.38.254.90: Getting Inventory
+Tue, 01 Sep 2015 17:59:57 +0000 REST Request from 96.38.254.90: Error 16635 The item number being requested doesn't exist
+
+Thu, 03 Sep 2015 00:18:17 +0000 REST Request from 68.119.55.49: USER AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:40.0) Gecko/20100101 Firefox/40.0
+Thu, 03 Sep 2015 00:18:17 +0000 REST Request from 68.119.55.49: Getting Item Information
+Thu, 03 Sep 2015 00:18:17 +0000 REST Request from 68.119.55.49: Successful Request
+
+Thu, 03 Sep 2015 00:19:18 +0000 REST Request from 68.119.55.49: USER AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:40.0) Gecko/20100101 Firefox/40.0
+Thu, 03 Sep 2015 00:19:18 +0000 REST Request from 68.119.55.49: Getting Item Information
+Thu, 03 Sep 2015 00:19:18 +0000 REST Request from 68.119.55.49: Successful Request
+
+Thu, 03 Sep 2015 00:19:51 +0000 REST Request from 68.119.55.49: USER AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:40.0) Gecko/20100101 Firefox/40.0
+Thu, 03 Sep 2015 00:19:51 +0000 REST Request from 68.119.55.49: Getting Inventory
+Thu, 03 Sep 2015 00:19:51 +0000 REST Request from 68.119.55.49: Successful Request
+
+Thu, 03 Sep 2015 00:20:41 +0000 REST Request from 68.119.55.49: USER AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:40.0) Gecko/20100101 Firefox/40.0
+Thu, 03 Sep 2015 00:20:41 +0000 REST Request from 68.119.55.49: Send Order Called
+Thu, 03 Sep 2015 00:20:41 +0000 REST Request from 68.119.55.49: 16521 - Insufficient data provided for creating order 
+Array
+(
+    [BSVKey] => 108b6a78-4027-447b-9b2d-a6c9b7da72dc
+    [DealerKey] => 0d3d6381-0e02-11e5-9eb5-20c9d0478db9
+    [AccountNumber] => 12345
+    [Data] => Array
+        (
+        )
+
+    [bsvkey] => 108b6a78-4027-447b-9b2d-a6c9b7da72dc
+    [dealerkey] => 0d3d6381-0e02-11e5-9eb5-20c9d0478db9
+    [accountnumber] => 12345
+    [data] => 
+    [BSVKeyID] => 3
+    [DealerID] => 1
+)
+
+

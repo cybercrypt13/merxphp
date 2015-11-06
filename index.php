@@ -16,30 +16,14 @@ if (empty($requesttype))
 //01.23.2013 naj - get the request vars
 $requestvars = cleanRest($rest->getRequestVars());
 
-//08.20.2015 ghh -  first we need to make sure we have a valid
-//bsvkey to work with.  This insures the request is coming from a
-//tested BSV system and not just from anywhere
-if (isset($requestvars["bsvkey"]))
-	$bsvkey = $requestvars["bsvkey"];
-else
-	//return error
-	die(RestUtils::sendResponse(400, 'Error 16533: Missing BSVKey'));
-
-//08.20.2015 ghh -  now validate the bsv key is valid and that it exists within
-//the vendors database records
-if ( !verifyBSV( $bsvkey ) )
-	die(RestUtils::sendResponse(400, 'Error 16534: Bad BSVKey'));
-
-RestLog("USER AGENT: $_SERVER[HTTP_USER_AGENT]");
-
-//08.20.2015 ghh -  now we need to verify the dealerkey that was sent in and
+//08.20.2015 ghh -  now we need to verify the clientkey that was sent in and
 //build a new one if we don't already have it.  In the event we don't have one
 //one will be build on the first every call and returned to the BSV to store for
-//future calls.  If they fail to store it then the dealer will be down until 
-//someone manually resets the dealership on the server.
-$dealerkey = verifyDealerKey( $requestvars["dealerkey"], $requestvars["accountnumber"] );
+//future calls.  If they fail to store it then the client will be down until 
+//someone manually resets the client on the server.
+$clientkey = verifyClientKey( $requestvars["clientkey"], $requestvars["accountnumber"] );
 
-$requestvars['DealerKey'] = $dealerkey;
+$requestvars['ClientKey'] = $clientkey;
 
 switch($rest->getMethod())
 	{

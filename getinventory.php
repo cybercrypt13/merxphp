@@ -13,7 +13,7 @@ if ( empty( $ar )  || !isset($ar[ 'VendorID' ]) || !isset( $ar[ 'ItemNumber' ] )
 	}
 
 //now we grab inventory records for the requested item and build up our package to return
-//to the dealer
+//to the client
 //08.26.2015 rch - Moving ItemStock,Warehouses,DaysToFullfill to left outer joins 
 //to account for not stocking an item or not putting in warehouse
 //08.28.2015 ghh -  added Weight
@@ -27,7 +27,7 @@ $query = "select Items.ItemID, Items.MSRP, NLA, CloseOut,
 				left outer join DaysToFullfill on DaysToFullfill.WarehouseID = ItemStock.WarehouseID
 				where Items.ItemNumber='$ar[ItemNumber]' and
 				Items.VendorID=$ar[VendorID] and
-				DaysToFullfill.DealerID=$ar[DealerID] order by DaysToArrive";
+				DaysToFullfill.ClientID=$ar[ClientID] order by DaysToArrive";
 
 if (!$result = $db->sql_query($query))
 	{
@@ -63,13 +63,15 @@ while ( $row = $db->sql_fetchrow( $result ) )
 	$i++;
 	}
 
+//09.01.2015 ghh -  if we found the item in question then enter here
+//otherwise we're going to return an error
 if ( $itemid > 0 )
 	{
 	$item['Warehouses'] 			= $rst;
 	$item['MSRP']					= $MSRP;
 
 	if ( $itemid > 0 )
-		$item['Cost']					= getItemCost( $itemid, $ar['DealerID'],
+		$item['Cost']					= getItemCost( $itemid, $ar['ClientID'],
 																	$row['PriceCode'],
 																	$row['Cost'], $row['MSRP'] );
 

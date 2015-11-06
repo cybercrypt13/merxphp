@@ -13,12 +13,12 @@ if ( empty( $ar )  || !isset($ar[ 'PONumber' ]) || !isset( $ar[ 'Status' ] ) ||
 	return false;
 	}
 
-//08.21.2015 ghh -  before we get started we need to see if the current dealer
+//08.21.2015 ghh -  before we get started we need to see if the current client
 //already has a PO in the system matching what they are now sending.  If so we're
 //going to be updating it if its pending or if it hasn't been pulled by the primary
 //vendor system yet.
 $query = "select POID, Status from PurchaseOrders where PONumber='$ar[PONumber]' and
-				DealerID=$vars[DealerID]";
+				ClientID=$vars[ClientID]";
 
 if (!$result = $db->sql_query($query))
 	{
@@ -66,9 +66,9 @@ if ( $db->sql_numrows( $result ) == 0 )
 		else $shiptovals .= "'$ar[ShipMethod]',";
 		}
 
-	$query = "insert into PurchaseOrders (Status, DealerID, BSVKeyID, PONumber,
+	$query = "insert into PurchaseOrders (Status, ClientID, PONumber,
 				DateCreated, $shiptofields LastFour,OrderType) values 
-				( $ar[Status], $vars[DealerID], $vars[BSVKeyID], '$ar[PONumber]', now(),
+				( $ar[Status], $vars[ClientID], '$ar[PONumber]', now(),
 				$shiptovals '$ar[LastFour]',$ar[OrderType] )
 				";
 
@@ -120,7 +120,7 @@ else
 		{
 		$query1 .= " DateLastModified=now() ";
 	
-		$query .= "$query1 where DealerID=$vars[DealerID] and PONumber='$ar[PONumber]'";
+		$query .= "$query1 where ClientID=$vars[ClientID] and PONumber='$ar[PONumber]'";
 		}
 	else
 		$query = '';
@@ -192,8 +192,8 @@ foreach ( $ar['Items'] as $value => $key)
 			return false;
 			}
 
-		//now lets see if we can calculate the cost for the current dealer
-		$cost = getItemCost( $itemrow['ItemID'], $vars['DealerID'], $itemrow['PriceCode'],
+		//now lets see if we can calculate the cost for the current client
+		$cost = getItemCost( $itemrow['ItemID'], $vars['ClientID'], $itemrow['PriceCode'],
 						$itemrow['Cost'], $itemrow['MSRP']);
 		}
 	else
@@ -300,7 +300,7 @@ foreach ( $ar['Items'] as $value => $key)
 
 $rst['PONumber'] 		= $ar['PONumber'];
 $rst['InternalID']	= $poid;
-$rst['DealerKey']		= $vars['DealerKey'];
+$rst['ClientKey']		= $vars['ClientKey'];
 $rst['Items']			= $items;
 
 
@@ -356,8 +356,8 @@ foreach ( $ar['Units'] as $value => $key)
 			return false;
 			}
 
-		//now lets see if we can calculate the cost for the current dealer
-		$cost = getUnitCost( $unitrow['ModelID'], $vars['DealerID'],
+		//now lets see if we can calculate the cost for the current client
+		$cost = getUnitCost( $unitrow['ModelID'], $vars['ClientID'],
 						$unitrow['Cost']);
 		}
 	else

@@ -17,34 +17,17 @@
 
 create database if not exists merx;
 use merx;
+
 --
--- Table structure for table `AuthorizedBSVKeys`
+-- Table structure for table `ClientCredentials`
 --
 
-DROP TABLE IF EXISTS `AuthorizedBSVKeys`;
+DROP TABLE IF EXISTS `ClientCredentials`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `AuthorizedBSVKeys` (
-  `BSVKeyID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique ID for each authorized BSV key',
-  `BSVKey` char(64) NOT NULL DEFAULT '' COMMENT 'The BSV authorization key',
-  `BSVVendorCode` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Flag to tell merX if it needs to use the BSV specific vendor codes',
-  PRIMARY KEY (`BSVKeyID`),
-  UNIQUE KEY `BSVKey` (`BSVKey`),
-  KEY `iBSVKey` (`BSVKey`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Stores the authorized BSV Keys';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `DealerCredentials`
---
-
-DROP TABLE IF EXISTS `DealerCredentials`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `DealerCredentials` (
-  `DealerID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique key for each dealer',
-  `DealerKey` varchar(40) DEFAULT NULL COMMENT 'Stores the dealer key',
+CREATE TABLE `ClientCredentials` (
+  `ClientID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique key for each dealer',
+  `ClientKey` varchar(40) DEFAULT NULL COMMENT 'Stores the dealer key',
   `IPAddress` int(10) unsigned DEFAULT NULL COMMENT 'Stores the client ip as integer',
   `CreatedDateTime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'When the record was created',
   `UpdatedDateTime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'When the record was modified',
@@ -52,25 +35,25 @@ CREATE TABLE `DealerCredentials` (
   `LastIPAddress` int(10) unsigned DEFAULT NULL COMMENT 'Hold the client''s last know IP Address',
   `Active` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'Turns on or off the clients Account',
   `AccountNumber` varchar(35) NOT NULL DEFAULT '' COMMENT 'Holds the dealer number',
-  PRIMARY KEY (`DealerID`),
+  PRIMARY KEY (`ClientID`),
   UNIQUE KEY `iAccountNumber` (`AccountNumber`),
   KEY `iUUIDIPAddr` (`IPAddress`),
-  KEY `iLogin` (`DealerKey`,`Active`)
+  KEY `iLogin` (`ClientKey`,`Active`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='This table stores the client system''s credentials';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `DealerDiscountLink`
+-- Table structure for table `ClientDiscountLink`
 --
 
-DROP TABLE IF EXISTS `DealerDiscountLink`;
+DROP TABLE IF EXISTS `ClientDiscountLink`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `DealerDiscountLink` (
-  `DealerID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to DealerCredentials table',
+CREATE TABLE `ClientDiscountLink` (
+  `ClientID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to ClientCredentials table',
   `ItemID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to the Items table',
   `Discount` float DEFAULT '0' COMMENT 'The discount rate',
-  UNIQUE KEY `iDealerCode` (`DealerID`,`ItemID`)
+  UNIQUE KEY `iClientCode` (`ClientID`,`ItemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table links dealers to specific parts and discount percentages.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -137,19 +120,19 @@ CREATE TABLE `ItemStock` (
 DROP TABLE IF EXISTS `ItemCost`;
 CREATE TABLE `ItemCost` (
   `ItemID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique key for each part in merX',
-  `DealerID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to the Warehouses',
-  `DealerCost` decimal(13,3) NOT NULL DEFAULT '0.000' COMMENT 'This store the actual cost of the item',
-  PRIMARY KEY (`ItemID`, `DealerID`)
+  `ClientID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to the Warehouses',
+  `ClientCost` decimal(13,3) NOT NULL DEFAULT '0.000' COMMENT 'This store the actual cost of the item',
+  PRIMARY KEY (`ItemID`, `ClientID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This tables holds cost per dealer per item';
 
 
 DROP TABLE IF EXISTS `DaysToFullfill`;
 
 CREATE TABLE `DaysToFullfill` (
-  `DealerID` int(10) unsigned NOT NULL COMMENT 'Links to dealer table',
+  `ClientID` int(10) unsigned NOT NULL COMMENT 'Links to dealer table',
   `WarehouseID` int(10) unsigned NOT NULL COMMENT 'Links to warehouse table',
   `DaysToArrive` int(10) NOT NULL COMMENT 'how many days before shipment arrives from this warehouse',
-  PRIMARY KEY (`DealerID`, `WarehouseID`)
+  PRIMARY KEY (`ClientID`, `WarehouseID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This tables holds number of days to arrive from each warehouse for each dealer';
 
 
@@ -175,10 +158,10 @@ DROP TABLE IF EXISTS `PriceCodesLink`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `PriceCodesLink` (
-  `DealerID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to DealerCredentials table',
+  `ClientID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to ClientCredentials table',
   `PriceCode` varchar(3) NOT NULL DEFAULT '' COMMENT 'Hold the price code',
   `Discount` float DEFAULT '0' COMMENT 'The discount rate',
-  UNIQUE KEY `iDealerCode` (`DealerID`,`PriceCode`)
+  UNIQUE KEY `iClientCode` (`ClientID`,`PriceCode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table links dealers to specific price codes and discount percentages';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -294,8 +277,7 @@ DROP TABLE IF EXISTS `PurchaseOrders`;
 CREATE TABLE `PurchaseOrders` (
   `POID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique key for each purchase order',
   `Status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Holds the PO Status 0 = pending, 1 = ordered, 2 = processing, 3 = pulling, 4 = staging, 5 = shipping, 6 = completed',
-  `DealerID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to DealerCredentials table',
-  `BSVKeyID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to BSV table',
+  `ClientID` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Links to ClientCredentials table',
   `PONumber` varchar(20) NOT NULL DEFAULT '' COMMENT 'Stores the client''s purchase order number',
   `DueDate` Date  COMMENT 'Due Date Returned By Vendor',
   `ShipToFirstName` varchar(50) NOT NULL DEFAULT '' COMMENT 'Stores the ship to contact name',
@@ -326,7 +308,7 @@ CREATE TABLE `PurchaseOrders` (
   PaybyDiscountAmount decimal(13,3) default 0 comment 'dollar amount of discount if paid by date',
   PaybyDiscountPercent decimal(13,3) default 0 comment 'amount of percentage to discount if paid by date',
   PRIMARY KEY (`POID`),
-  KEY `iClientPONumber` (`DealerID`,`PONumber`),
+  KEY `iClientPONumber` (`ClientID`,`PONumber`),
   KEY `iGetOrders` (`DateOrdered`,`Status`),
   KEY `iGetOrders2` (`Status`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='This table stores the client''s purchase order data.';
@@ -415,10 +397,10 @@ engine=innodb DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci comment 'Model 
 drop table if exists UnitModelCost;
 create table UnitModelCost(
 ModelID int unsigned not null comment 'links to UnitModels',
-DealerID int unsigned not null comment 'links to DealerCredentials',
-Cost decimal(13,3) not null comment 'Dealer specific cost for this unit',
-Unique Key iModelID( ModelID, DealerID ) )
-engine=innodb DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci comment 'Dealer specific cost table for models';
+ClientID int unsigned not null comment 'links to ClientCredentials',
+Cost decimal(13,3) not null comment 'Client specific cost for this unit',
+Unique Key iModelID( ModelID, ClientID ) )
+engine=innodb DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci comment 'Client specific cost table for models';
 
 
 drop table if exists UnitVehicleTypes;
@@ -453,7 +435,7 @@ Description text comment 'holds details about the Rebate',
 DateActive date not null comment 'holds date Rebate becomes active',
 DateExpired date not null comment 'holds date Rebate terminates',
 Amount decimal(13,3) not null comment 'amount of the rebate',
-DealerPercent decimal(13,3) not null comment 'percent of rebate for dealer to receive',
+ClientPercent decimal(13,3) not null comment 'percent of rebate for dealer to receive',
 Key iName( RebateID, Name ) )
 engine=innodb DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci comment 'List of model rebates';
 

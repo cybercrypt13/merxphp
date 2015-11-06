@@ -18,7 +18,7 @@ if ( !isset( $ar ) || !$ar['InternalID'] > 0 )
 //08.26.2015 ghh -  to insure a dealer can't get a status on another dealers
 //orders we need to make sure we include their internal id plus their dealerid
 $query = "select * from PurchaseOrders where POID=$ar[InternalID] and
-				DealerID=$ar[DealerID]";
+				ClientID=$ar[ClientID]";
 
 if (!$result = $db->sql_query($query))
 	{

@@ -42,7 +42,7 @@ $item['MAP']					= $row['MAP'];
 $item['Weight']				= $row['Weight']; //08.28.2015 ghh -  
 
 if ( $row['ItemID'] > 0 )
-	$item['Cost']					= getItemCost( $row['ItemID'], $ar['DealerID'],
+	$item['Cost']					= getItemCost( $row['ItemID'], $ar['ClientID'],
 																	$row['PriceCode'],
 																	$row['Cost'], $row['MSRP'] );
 
